@@ -7,7 +7,6 @@ markdown
 gunicorn
 aiohttp
 requests
-threading
 glob
 bleach
 base64
