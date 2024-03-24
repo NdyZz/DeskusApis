@@ -7,7 +7,7 @@ from routes import app
 from threading import Thread
 
 def run_flask():
-   app.run()
+   app.run(debug=conf.DEBUG, port=conf.PORT, host="0.0.0.0")
 
 @app.after_request
 def add_header(response):
