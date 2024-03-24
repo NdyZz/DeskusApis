@@ -4,7 +4,7 @@
 
 import markdown
 
-PORT = 35
+PORT = 8080
 DEBUG = False
 AUTO_RELOAD = True
 
