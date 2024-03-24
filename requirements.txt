@@ -7,8 +7,5 @@ markdown
 gunicorn
 aiohttp
 requests
-glob
-bleach
-base64
 fake_useragent
 email_validator
