@@ -1,0 +1,38 @@
+<div class="container py-4 py-xl-5">
+  <div class="row gy-4 gy-md-0">
+    <div class="col-md-6">
+      <div class="p-xl-5 m-xl-5">
+        <img
+          class="w-100 image-js vjs-theme-sea rounded"
+          controls
+          preload="auto"
+          data-setup="{}"
+          src="static/images/logo.png"
+        ><source type="image/jpeg"></source></img>
+      </div>
+    </div>
+    <div class="col-md-6 d-md-flex align-items-md-center">
+      <div style="max-width: 350px">
+        <h2 class="text-uppercase fw-bold">
+          <a href="{{ configs.AUTHOR_LINK }}" class="text-decoration-none text-info">{{ configs.APP_TITLE }}</a>
+        </h2>
+
+        <p class="my-3">
+          {{ configs.APP_DESCRIPTION }} Dibuat oleh <a href="{{ configs.AUTHOR_LINK }}">NdyZz</a><br />
+        </p>
+        <a class="btn btn-dark btn-lg me-2" role="button" href="#" id="darkModeBtn">Dark mode</a
+        ><a
+          class="btn btn-light btn-lg text-dark"
+          role="button"
+          href="#"
+          id="lightModeBtn"
+          >Light mode</a
+        >
+        <a class="btn btn-lg btn-outline-info" href="#" data-bs-target="#modal-changelog" data-bs-toggle="modal">Changelog</a>
+        <br />
+        <br />
+        <a class="btn btn-primary" href="/donate">Donasi</a>&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+</div>
