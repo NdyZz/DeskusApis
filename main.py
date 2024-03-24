@@ -15,8 +15,4 @@ def add_header(response):
    return response
 
 if __name__ == "__main__":
-   t1 = Thread(target=run_flask)
-   t2 = Thread(target=run_flask)
-   
-   t1.start()
-   t2.start()
+   run_flask()
