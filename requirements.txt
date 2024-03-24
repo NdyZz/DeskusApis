@@ -11,3 +11,5 @@ threading
 glob
 bleach
 base64
+fake_useragent
+email_validator
