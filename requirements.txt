@@ -4,3 +4,4 @@ flask-cors
 bs4
 fake-useragent
 markdown
+gunicorn
