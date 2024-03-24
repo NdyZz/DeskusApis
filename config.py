@@ -33,7 +33,7 @@ DONATE = [
          "href": False,
          "text": "Dana",
       },
-      "description": "085346923840",
+      "description": "083133318509",
    },
    {
       "image": "./static/images/gopay.png",
@@ -41,7 +41,7 @@ DONATE = [
          "href": False,
          "text": "Gopay",
       },
-      "description": "085346923840",
+      "description": "083133318509",
    },
    {
       "image": "./static/images/ovo.png",
@@ -49,7 +49,7 @@ DONATE = [
          "href": False,
          "text": "Ovo",
       },
-      "description": "085346923840",
+      "description": "083133318509",
    }
 ]
 
