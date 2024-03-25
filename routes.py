@@ -337,7 +337,7 @@ def bing_img():
             'endpoint': server,
             'author': 'NdyZz'
          }), 400
-      bingApi = BingApi(coki)
+      bingApi = BingApi(conf.COOKIE_BING)
       result = bingApi.create_images(query+'. Anime Style ultra, HD Anime Style, 4K Anime Style, Anime Style, High quality, Ultra grapics, HD Cinematic, anime, 4K resolution, HD quality, Ultra CGI, High quality, Ultra grapics, HD Cinematic', False)
       return jsonify({
          'author': 'NdyZz',
