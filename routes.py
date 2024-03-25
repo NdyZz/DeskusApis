@@ -55,6 +55,93 @@ def handle_errors(error):
    return redirect(url_for("index"))
    
 ## scrape
+class BingApi:
+  def __init__(self, cookie):
+    self.cookie = cookie
+    self.headers = {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.5',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Alt-Used': 'www.bing.com',
+      'Upgrade-Insecure-Requests': '1',
+      'Sec-Fetch-Dest': 'document',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-Site': 'same-origin',
+      'Sec-Fetch-User': '?1',
+      'Cookie': f'{cookie}',
+      'X-Forwarded-For': f'{random.randint(20, 254)}.{random.randint(0, 254)}.{random.randint(0, 254)}.{random.randint(0, 254)}',
+    }
+
+  def create_images(self, prompt, is_slow_mode=True):
+    try:
+      payload = f'q={requests.utils.quote(prompt)}'
+      credits = self.get_credits() or 0
+
+      # Adjust request based on credits and slow mode
+      if credits > 0 and not is_slow_mode:
+        response = self.send_request(True, payload)
+      else:
+        response = self.send_request(is_slow_mode, payload)
+
+      if response.status_code == 200:
+        response_html = response.text
+        soup = BeautifulSoup(response_html, 'html.parser')
+
+        # Check for errors based on specific classes
+        error_count = len(soup.find_all('img', class_='gil_err_img rms_img'))
+        if not is_slow_mode and credits > 0 and soup.find('div', id='gilen_son').has_attr('class_', 'show_n'):
+          raise Exception('Dalle-3 is currently unavailable due to high demand')
+        elif (soup.find('div', id='gilen_son').has_attr('class_', 'show_n') or 
+              (error_count == 2 and credits > 0 and is_slow_mode)):
+          raise Exception('Slow mode is currently unavailable due to high demand')
+        elif error_count == 2:
+          raise Exception('Invalid cookie')
+        elif error_count == 4:
+          raise Exception('Prompt has been blocked')
+        else:
+          raise Exception('Unknown error')
+
+      event_id = response.headers.get('x-eventid')
+      return self.retrieve_images(event_id)
+    except Exception as e:
+      print(f"Error: {e}")
+      return None
+
+  def get_credits(self):
+    response = requests.get(f'https://www.bing.com/create', headers=self.headers)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    return soup.find(id='token_bal').text.strip() if soup.find(id='token_bal') else None
+
+  def send_request(self, is_slow_mode, payload):
+    url = f'https://www.bing.com/images/create?{payload}&rt={(3 if is_slow_mode else 4)}'
+    try:
+      response = requests.post(url, headers=self.headers, allow_redirects=False)
+      return response
+    except Exception as e:
+      print(f"Error in sendRequest: {e}")
+      return None
+
+  def retrieve_images(self, event_id):
+    while True:
+      images_response = requests.get(f'https://www.bing.com/images/create/async/results/1-{event_id}', headers=self.headers)
+      if images_response.text.find('"errorMessage":"Pending"') != -1:
+        raise Exception('Error occurred')
+
+      results = []
+
+      if images_response.text == '':
+        time.sleep(5)
+        continue
+
+      soup = BeautifulSoup(images_response.text, 'html.parser')
+      for image in soup.find_all('img', class_='mimg'):
+        bad_link = image['src']
+        good_link = bad_link[:bad_link.find('?')] # Delete the parameters
+        results.append(good_link)
+
+      return results
+
 class UrlShorten:
    TINYURL_URL = "http://tinyurl.com/api-create.php"
    ISGD_URL = "https://is.gd/create.php?format=json&url="
@@ -236,6 +323,31 @@ def translate():
       "text": text,
       "result": translated_text,
    })
+
+@app.route('/api/bing', methods=['GET'])
+@cross_origin()
+@cache.cached(timeout=3600, query_string=True)
+def bing_img():
+   try:
+      query = request.args.get('query')
+      if not query:
+         server = f"{request.host_url}api/bing?query=kucing"
+         return jsonify({
+            'error': 'No URL provided.',
+            'endpoint': server,
+            'author': 'NdyZz'
+         }), 400
+      bingApi = BingApi(coki)
+      result = bingApi.create_images(query+'. Anime Style ultra, HD Anime Style, 4K Anime Style, Anime Style, High quality, Ultra grapics, HD Cinematic, anime, 4K resolution, HD quality, Ultra CGI, High quality, Ultra grapics, HD Cinematic', False)
+      return jsonify({
+         'author': 'NdyZz',
+         'result': result
+      })
+   except Exception as e:
+      return jsonify({
+         'author': 'NdyZz',
+         'error': e
+      }), 500
 
 @app.route('/api/short', methods=['GET'])
 @cross_origin()
