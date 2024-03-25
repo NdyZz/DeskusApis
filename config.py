@@ -25,7 +25,16 @@ AUTHOR_LINK = "https://github.com/NdyZz"
 
 CHANGELOG = []
 
-GALERIES = []
+GALERIES = [
+   {
+    "image": "https://telegra.ph/file/c7c6ac3450d21070dc98c.jpg",
+    "link": {
+      "href": "https://gtmetrix.com/reports/deskus-ndyzzproductions.koyeb.app/wtip0VZ9/",
+      "text": "Lihat Hasil GTMetrix DESKTOP",
+    },
+    "description": False,
+  }
+]
 
 DONATE = [
    {
