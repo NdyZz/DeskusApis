@@ -88,5 +88,17 @@ API_SERVICES = [
          }
       ],
       "url": "/api/short?url=https://github.com/NdyZz"
+   },
+   {
+      "name": "Bing-Image",
+      "description": "Parameter untuk membuat gambar dari query/text",
+      "parameters": [
+         {
+            "name": "query",
+            "type": "string",
+            "required": True
+         }
+      ],
+      "url": "/api/bing?query=kucing"
    }
 ]
