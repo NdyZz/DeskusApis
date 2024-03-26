@@ -352,7 +352,7 @@ def bing_img():
 @app.route('/api/simi', methods=['GET'])
 @cross_origin()
 @cache.cached(timeout=3600, query_string=True)
-def simsimi:
+def simsimi():
    try:
       text = request.args.get('text')
       if not text:
