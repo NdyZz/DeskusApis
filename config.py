@@ -108,5 +108,46 @@ API_SERVICES = [
          }
       ],
       "url": "/api/bing?query=kucing"
+   },
+   {
+      "name": "Sim-Simi",
+      "description": "Parameter untuk menemani jomblo:v",
+      "parameters": [
+         {
+            "name": "text",
+            "type": "string",
+            "required": True
+         }
+      ],
+      "url": "/api/simi?text=halo+sayang"
+   },
+   {
+      "name": "Scraping Website",
+      "description": "Parameter untuk scraping website",
+      "parameters": [
+         {
+            "name": "url",
+            "type": "string",
+            "required": True
+         }
+      ],
+      "url": "/api/scrapeweb?url=https://github.com/NdyZz"
+   },
+   {
+      "name": "Questions Site",
+      "description": "Parameter untuk menanyakan sesuatu tentang situs",
+      "parameters": [
+         {
+            "name": "url",
+            "type": "string",
+            "required": True
+         },
+         {
+            "name": "q",
+            "type": "string",
+            "required": True
+         }
+      ],
+      "url": "/api/questionsite?url=https://github.com&q=apa+fungsi+web+tersebut?"
    }
 ]
