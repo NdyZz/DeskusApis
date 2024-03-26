@@ -387,11 +387,11 @@ def simsimi():
             'author': 'NdyZz',
             'result': success
          })
-    else:
-      return jsonify({
-         'error': 'requests error',
-         'author': 'NdyZz'
-      }), 400
+      else:
+         return jsonify({
+            'error': 'requests error',
+            'author': 'NdyZz'
+         }), 400
    except Exception as e:
       traceback.print_exc()
       print(e)
