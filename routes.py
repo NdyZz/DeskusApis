@@ -397,6 +397,101 @@ def simsimi():
       print(e)
       return jsonify({'error': str(e)}), 500
 
+@app.route('/api/simi', methods=['GET'])
+@cross_origin()
+@cache.cached(timeout=3600, query_string=True)
+def simsimi():
+   try:
+      text = request.args.get('text')
+      if not text:
+         server = f"{request.host_url}api/simi?text=halo"
+         return jsonify({
+            'error': 'No URL provided.',
+            'endpoint': server,
+            'author': 'NdyZz'
+         }), 400
+      headers = {
+         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0',
+         'Accept': 'application/json, text/javascript, */*; q=0.01',
+         'Accept-Language': 'id,en-US;q=0.7,en;q=0.3',
+         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+         'X-Requested-With': 'XMLHttpRequest',
+         'Origin': 'https://simsimi.vn',
+         'Alt-Used': 'simsimi.vn',
+         'Connection': 'keep-alive',
+         'Referer': 'https://simsimi.vn/',
+         'Sec-Fetch-Dest': 'empty',
+         'Sec-Fetch-Mode': 'cors',
+         'Sec-Fetch-Site': 'same-origin',
+      }
+      data = {
+         'text': text,
+         'lc': 'id',
+      }
+      response = requests.post('https://simsimi.vn/web/simtalk', headers=headers, data=data)
+      success = response.json().get('success')
+      if success:
+         return jsonify({
+            'author': 'NdyZz',
+            'result': success
+         })
+      else:
+         return jsonify({
+            'error': 'requests error',
+            'author': 'NdyZz'
+         }), 400
+   except Exception as e:
+      traceback.print_exc()
+      print(e)
+      return jsonify({'error': str(e)}), 500
+
+@app.route('/api/scrapeweb', methods=['GET'])
+@cross_origin()
+@cache.cached(timeout=3600, query_string=True)
+def scrap_web():
+   try:
+      url = request.args.get('url')
+      url_base = 'https://api.webscraping.ai/text'
+      params = {
+         'api_key': "404a63cb-91e8-4e6d-8700-542cff2b46ab",
+         'url': url,
+         'proxy': 'residential',
+         'text_format': 'xml'
+      }
+      response = requests.get(url_base, params=params)
+      data = response.text
+      return jsonify({
+         'author': 'NdyZz',
+         'result': data
+      })
+   except Exception as e:
+      print(str(e))
+      return jsonify({'error': str(e)}), 500
+
+@app.route('/api/questionsite', methods=['GET'])
+@cross_origin()
+@cache.cached(timeout=3600, query_string=True)
+def question_web():
+   try:
+      url = request.args.get('url')
+      quest = request.args.get('q')
+      url_base = 'https://api.webscraping.ai/ai/question'
+      params = {
+         'api_key': '404a63cb-91e8-4e6d-8700-542cff2b46ab',
+         'url': url,
+         'proxy': 'residential',
+         'question': quest
+      }
+      response = requests.get(url_base, params=params)
+      data = response.text
+      return jsonify({
+         'author': 'NdyZz',
+         'result': data
+      })
+   except Exception as e:
+      print(str(e))
+      return jsonify({'error': str(e)}), 500
+
 @app.route('/api/short', methods=['GET'])
 @cross_origin()
 @cache.cached(timeout=3600, query_string=True)
